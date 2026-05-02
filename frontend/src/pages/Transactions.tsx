@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useTransactionHistory } from '../hooks/useTransactions'
 import TransactionList from '../components/TransactionList'
 import DepositForm from '../components/DepositForm'
+import PaymentForm from '../components/PaymentForm'
 
 type Tab = 'deposit' | 'pay' | 'transfer'
 
@@ -33,7 +34,7 @@ export default function Transactions() {
         </div>
         <div className="op-body">
           {tab === 'deposit' && <DepositForm />}
-          {tab === 'pay' && <div className="muted">Payment form coming next.</div>}
+          {tab === 'pay' && <PaymentForm />}
           {tab === 'transfer' && <div className="muted">Transfer form coming next.</div>}
         </div>
       </div>
