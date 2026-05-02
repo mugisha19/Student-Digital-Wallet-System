@@ -131,3 +131,30 @@
   border: 1px solid var(--border);
 }
 .action-link.secondary-link:hover { background: var(--surface-alt); }
+
+/* Transaction list */
+.txn-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.txn-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.txn-row:last-child { border-bottom: none; }
+.txn-type { font-weight: 500; color: var(--text); }
+.txn-desc { font-size: 0.85rem; margin-top: 0.15rem; }
+.txn-meta { text-align: right; }
+.txn-amount {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.txn-amount.pos { color: var(--success); }
+.txn-amount.neg { color: var(--danger); }
+.txn-time { font-size: 0.8rem; margin-top: 0.15rem; }
+.empty-state { padding: 1rem 0; text-align: center; }
