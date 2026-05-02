@@ -4,7 +4,8 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>Student_Digital_Wallet_System</RootNamespace>
+    <RootNamespace>StudentWallet.Api</RootNamespace>
+    <AssemblyName>StudentWallet.Api</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
