@@ -158,3 +158,30 @@
 .txn-amount.neg { color: var(--danger); }
 .txn-time { font-size: 0.8rem; margin-top: 0.15rem; }
 .empty-state { padding: 1rem 0; text-align: center; }
+
+/* Operations card (deposit/pay/transfer) */
+.op-card { padding: 0; margin-bottom: 1.5rem; overflow: hidden; }
+.op-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-alt);
+}
+.op-tab {
+  flex: 1;
+  background: transparent;
+  color: var(--text-muted);
+  border: none;
+  border-radius: 0;
+  padding: 0.85rem 1rem;
+  font-weight: 500;
+  border-bottom: 2px solid transparent;
+}
+.op-tab:hover { background: rgba(0,0,0,0.02); color: var(--text); }
+.op-tab.active {
+  color: var(--accent);
+  background: var(--surface);
+  border-bottom-color: var(--accent);
+}
+.op-body { padding: 1.5rem; }
+.op-form .field { margin-bottom: 1rem; }
+.op-form button { min-width: 140px; }
