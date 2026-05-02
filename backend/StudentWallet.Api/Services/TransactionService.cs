@@ -61,4 +61,55 @@ public class TransactionService
         await _db.SaveChangesAsync(ct);
         return Map(txn);
     }
+
+    public async Task<TransactionDto> TransferAsync(int senderStudentId, TransferRequest req, CancellationToken ct = default)
+    {
+        var sender = await _db.Wallets
+            .Include(w => w.Student)
+            .FirstAsync(w => w.StudentId == senderStudentId, ct);
+
+        var receiver = await _db.Wallets
+            .Include(w => w.Student)
+            .FirstOrDefaultAsync(w => w.Student.StudentNumber == req.ReceiverStudentNumber, ct);
+
+        if (receiver is null)
+            throw new RecipientNotFoundException(req.ReceiverStudentNumber);
+
+        if (receiver.StudentId == senderStudentId)
+            throw new InvalidTransferException("Cannot transfer to your own account.");
+
+        if (sender.Balance < req.Amount)
+            throw new InsufficientFundsException();
+
+        await using var dbTxn = await _db.Database.BeginTransactionAsync(ct);
+
+        sender.Balance -= req.Amount;
+        var outRow = new Transaction
+        {
+            WalletId = sender.Id,
+            Type = TransactionType.TransferOut,
+            Amount = req.Amount,
+            BalanceAfter = sender.Balance,
+            CounterpartyWalletId = receiver.Id,
+            Description = req.Description
+        };
+        _db.Transactions.Add(outRow);
+
+        receiver.Balance += req.Amount;
+        var inRow = new Transaction
+        {
+            WalletId = receiver.Id,
+            Type = TransactionType.TransferIn,
+            Amount = req.Amount,
+            BalanceAfter = receiver.Balance,
+            CounterpartyWalletId = sender.Id,
+            Description = req.Description
+        };
+        _db.Transactions.Add(inRow);
+
+        await _db.SaveChangesAsync(ct);
+        await dbTxn.CommitAsync(ct);
+
+        return Map(outRow, receiver.Student.StudentNumber);
+    }
 }

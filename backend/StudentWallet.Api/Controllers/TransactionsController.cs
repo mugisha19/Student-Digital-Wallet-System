@@ -40,4 +40,27 @@ public class TransactionsController : ControllerBase
             return BadRequest(new { message = "Insufficient funds." });
         }
     }
+
+    [HttpPost("transfer")]
+    public async Task<IActionResult> Transfer([FromBody] TransferRequest req, CancellationToken ct)
+    {
+        var studentId = User.GetStudentId();
+        try
+        {
+            var txn = await _transactions.TransferAsync(studentId, req, ct);
+            return Ok(txn);
+        }
+        catch (RecipientNotFoundException ex)
+        {
+            return NotFound(new { message = ex.Message });
+        }
+        catch (InvalidTransferException ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+        catch (InsufficientFundsException)
+        {
+            return BadRequest(new { message = "Insufficient funds." });
+        }
+    }
 }
