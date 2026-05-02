@@ -6,6 +6,7 @@ import { AuthProvider } from './context/AuthContext'
 import RequireAuth from './routes/RequireAuth'
 import App from './App.tsx'
 import Login from './pages/Login'
+import Register from './pages/Register'
 import PlaceholderDashboard from './pages/PlaceholderDashboard'
 import './index.css'
 import './App.css'
@@ -27,7 +28,7 @@ createRoot(document.getElementById('root')!).render(
         <AuthProvider>
           <Routes>
             <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<div style={{ padding: '2rem' }}>Register page coming soon.</div>} />
+            <Route path="/register" element={<Register />} />
             <Route element={<RequireAuth />}>
               <Route path="/" element={<App />}>
                 <Route index element={<Navigate to="/dashboard" replace />} />
