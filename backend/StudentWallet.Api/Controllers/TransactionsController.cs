@@ -63,4 +63,14 @@ public class TransactionsController : ControllerBase
             return BadRequest(new { message = "Insufficient funds." });
         }
     }
+
+    [HttpGet]
+    public async Task<IActionResult> History([FromQuery] int skip = 0, [FromQuery] int take = 50, CancellationToken ct = default)
+    {
+        if (skip < 0) skip = 0;
+        if (take <= 0 || take > 200) take = 50;
+        var studentId = User.GetStudentId();
+        var rows = await _transactions.GetHistoryAsync(studentId, skip, take, ct);
+        return Ok(rows);
+    }
 }

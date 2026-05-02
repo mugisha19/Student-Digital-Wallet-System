@@ -112,4 +112,27 @@ public class TransactionService
 
         return Map(outRow, receiver.Student.StudentNumber);
     }
+
+    public async Task<IReadOnlyList<TransactionDto>> GetHistoryAsync(int studentId, int skip, int take, CancellationToken ct = default)
+    {
+        return await _db.Transactions
+            .AsNoTracking()
+            .Where(t => t.Wallet.StudentId == studentId)
+            .OrderByDescending(t => t.CreatedAt)
+            .Skip(skip)
+            .Take(take)
+            .Select(t => new TransactionDto(
+                t.Id,
+                t.Type,
+                t.Amount,
+                t.BalanceAfter,
+                t.ServiceCategory,
+                _db.Wallets
+                    .Where(w => w.Id == t.CounterpartyWalletId)
+                    .Select(w => w.Student.StudentNumber)
+                    .FirstOrDefault(),
+                t.Description,
+                t.CreatedAt))
+            .ToListAsync(ct);
+    }
 }
