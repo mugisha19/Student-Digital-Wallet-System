@@ -4,7 +4,7 @@ public class Student
 {
     public int Id { get; set; }
 
-    public string StudentId { get; set; } = null!;
+    public string StudentNumber { get; set; } = null!;
 
     public string Name { get; set; } = null!;
 
