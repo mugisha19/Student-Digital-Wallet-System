@@ -45,6 +45,7 @@ builder.Services.AddSingleton<PinHasher>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<WalletService>();
 builder.Services.AddScoped<TransactionService>();
+builder.Services.AddScoped<ReportsService>();
 
 var jwt = builder.Configuration.GetSection(JwtOptions.SectionName).Get<JwtOptions>()!;
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
