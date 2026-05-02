@@ -185,3 +185,41 @@
 .op-body { padding: 1.5rem; }
 .op-form .field { margin-bottom: 1rem; }
 .op-form button { min-width: 140px; }
+
+/* Reports */
+.totals-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.stat .stat-value {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-top: 0.35rem;
+  font-variant-numeric: tabular-nums;
+}
+.stat-value.pos { color: var(--success); }
+.stat-value.neg { color: var(--danger); }
+.span-all { grid-column: 1 / -1; }
+
+.daily-table-wrap { overflow-x: auto; }
+.daily-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+.daily-table th, .daily-table td {
+  text-align: left;
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid var(--border);
+}
+.daily-table tr:last-child td { border-bottom: none; }
+.daily-table thead th {
+  font-weight: 500;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+.daily-table td.num { text-align: right; }
+.daily-table td.pos { color: var(--success); }
+.daily-table td.neg { color: var(--danger); }
