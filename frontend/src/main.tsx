@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AuthProvider } from './context/AuthContext'
 import RequireAuth from './routes/RequireAuth'
 import App from './App.tsx'
+import Login from './pages/Login'
 import PlaceholderDashboard from './pages/PlaceholderDashboard'
 import './index.css'
 import './App.css'
@@ -25,7 +26,7 @@ createRoot(document.getElementById('root')!).render(
       <BrowserRouter>
         <AuthProvider>
           <Routes>
-            <Route path="/login" element={<div style={{ padding: '2rem' }}>Login page coming soon.</div>} />
+            <Route path="/login" element={<Login />} />
             <Route path="/register" element={<div style={{ padding: '2rem' }}>Register page coming soon.</div>} />
             <Route element={<RequireAuth />}>
               <Route path="/" element={<App />}>
