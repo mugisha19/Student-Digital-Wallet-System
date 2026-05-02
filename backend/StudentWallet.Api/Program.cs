@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using StudentWallet.Api.Auth;
 using StudentWallet.Api.Data;
+using StudentWallet.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,6 +43,7 @@ builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection(JwtOptio
 builder.Services.AddSingleton<JwtTokenService>();
 builder.Services.AddSingleton<PinHasher>();
 builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<WalletService>();
 
 var jwt = builder.Configuration.GetSection(JwtOptions.SectionName).Get<JwtOptions>()!;
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
