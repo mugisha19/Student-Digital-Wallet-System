@@ -223,3 +223,13 @@
 .daily-table td.num { text-align: right; }
 .daily-table td.pos { color: var(--success); }
 .daily-table td.neg { color: var(--danger); }
+
+/* Section head with action button */
+.section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 2rem 0 0.75rem;
+}
+.section-head h2 { margin: 0; }
