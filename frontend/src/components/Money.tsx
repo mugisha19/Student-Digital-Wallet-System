@@ -1,9 +1,9 @@
 type Props = { value: number | string | null | undefined }
 
-const fmt = new Intl.NumberFormat(undefined, {
+const fmt = new Intl.NumberFormat('en-RW', {
   style: 'currency',
-  currency: 'USD',
-  minimumFractionDigits: 2,
+  currency: 'RWF',
+  maximumFractionDigits: 0,
 })
 
 export default function Money({ value }: Props) {

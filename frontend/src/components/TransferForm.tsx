@@ -75,9 +75,9 @@ export default function TransferForm() {
         <input
           id="xfer-amount"
           type="number"
-          inputMode="decimal"
-          min="0.01"
-          step="0.01"
+          inputMode="numeric"
+          min="1"
+          step="1"
           required
           value={amount}
           onChange={(e) => setAmount(e.target.value)}

@@ -7,7 +7,7 @@ public class TransferRequest
     [Required, StringLength(32)]
     public string ReceiverStudentNumber { get; set; } = null!;
 
-    [Range(0.01, 1_000_000)]
+    [Range(1, 10_000_000)]
     public decimal Amount { get; set; }
 
     [StringLength(256)]

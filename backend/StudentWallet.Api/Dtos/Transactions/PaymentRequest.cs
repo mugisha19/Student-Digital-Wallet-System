@@ -5,7 +5,7 @@ namespace StudentWallet.Api.Dtos.Transactions;
 
 public class PaymentRequest
 {
-    [Range(0.01, 1_000_000)]
+    [Range(1, 10_000_000)]
     public decimal Amount { get; set; }
 
     [Required]
