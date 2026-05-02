@@ -37,4 +37,28 @@ public class TransactionService
         await _db.SaveChangesAsync(ct);
         return Map(txn);
     }
+
+    public async Task<TransactionDto> PayAsync(int studentId, PaymentRequest req, CancellationToken ct = default)
+    {
+        var wallet = await _db.Wallets.FirstAsync(w => w.StudentId == studentId, ct);
+
+        if (wallet.Balance < req.Amount)
+            throw new InsufficientFundsException();
+
+        wallet.Balance -= req.Amount;
+
+        var txn = new Transaction
+        {
+            WalletId = wallet.Id,
+            Type = TransactionType.Payment,
+            Amount = req.Amount,
+            BalanceAfter = wallet.Balance,
+            ServiceCategory = req.ServiceCategory,
+            Description = req.Description
+        };
+        _db.Transactions.Add(txn);
+
+        await _db.SaveChangesAsync(ct);
+        return Map(txn);
+    }
 }
