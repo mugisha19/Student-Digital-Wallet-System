@@ -1,8 +1,9 @@
 type Props = { value: number | string | null | undefined }
 
-const fmt = new Intl.NumberFormat('en-RW', {
+const fmt = new Intl.NumberFormat('en-US', {
   style: 'currency',
   currency: 'RWF',
+  currencyDisplay: 'code',
   maximumFractionDigits: 0,
 })
 
