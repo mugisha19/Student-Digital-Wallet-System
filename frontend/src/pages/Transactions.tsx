@@ -6,7 +6,7 @@ import TransactionList from '../components/TransactionList'
 import DepositForm from '../components/DepositForm'
 import PaymentForm from '../components/PaymentForm'
 import TransferForm from '../components/TransferForm'
-import { downloadCsv, todayStamp } from '../utils/csv'
+import { downloadReportPdf, todayStamp } from '../utils/pdf'
 
 type Tab = 'deposit' | 'pay' | 'transfer'
 
@@ -29,19 +29,22 @@ export default function Transactions() {
 
   function exportHistory() {
     if (!data || data.length === 0) return
-    downloadCsv(
-      `wallet-history-${student?.studentNumber ?? 'student'}-${todayStamp()}.csv`,
-      ['Date', 'Type', 'Amount (RWF)', 'Balance after (RWF)', 'Service', 'Counterparty', 'Description'],
-      data.map((t) => [
-        t.createdAt,
+    downloadReportPdf({
+      filename: `wallet-history-${student?.studentNumber ?? 'student'}-${todayStamp()}.pdf`,
+      title: 'Transaction history',
+      studentNumber: student?.studentNumber,
+      studentName: student?.name,
+      head: ['Date', 'Type', 'Amount', 'Balance after', 'Service', 'Counterparty', 'Description'],
+      rows: data.map((t) => [
+        new Date(t.createdAt).toLocaleString(),
         typeName[t.type] ?? String(t.type),
-        t.amount,
-        t.balanceAfter,
+        Math.round(t.amount).toLocaleString(),
+        Math.round(t.balanceAfter).toLocaleString(),
         t.serviceCategory != null ? (categoryName[t.serviceCategory] ?? '') : '',
         t.counterpartyStudentNumber ?? '',
         t.description ?? '',
       ]),
-    )
+    })
   }
 
   return (
@@ -79,7 +82,7 @@ export default function Transactions() {
           className="secondary"
           onClick={exportHistory}
           disabled={!data || data.length === 0}
-        >Export CSV</button>
+        >Export PDF</button>
       </div>
 
       <div className="card">

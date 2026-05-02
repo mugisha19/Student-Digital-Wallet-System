@@ -1,7 +1,7 @@
 import { useTotals, useDaily } from '../hooks/useReports'
 import { useAuth } from '../context/AuthContext'
 import Money from '../components/Money'
-import { downloadCsv, todayStamp } from '../utils/csv'
+import { downloadReportPdf, todayStamp } from '../utils/pdf'
 
 function formatDate(iso: string): string {
   return new Date(iso).toLocaleDateString(undefined, {
@@ -21,26 +21,38 @@ export default function Reports() {
 
   function exportTotals() {
     if (!t) return
-    downloadCsv(
-      `wallet-totals-${studentTag}-${todayStamp()}.csv`,
-      ['Metric', 'Amount (RWF)'],
-      [
-        ['Deposits', t.totalDeposits],
-        ['Payments', t.totalPayments],
-        ['Transfers in', t.totalTransfersIn],
-        ['Transfers out', t.totalTransfersOut],
-        ['Net', net],
+    downloadReportPdf({
+      filename: `wallet-totals-${studentTag}-${todayStamp()}.pdf`,
+      title: 'Totals report',
+      studentNumber: student?.studentNumber,
+      studentName: student?.name,
+      head: ['Metric', 'Amount (RWF)'],
+      rows: [
+        ['Deposits', Math.round(t.totalDeposits).toLocaleString()],
+        ['Payments', Math.round(t.totalPayments).toLocaleString()],
+        ['Transfers in', Math.round(t.totalTransfersIn).toLocaleString()],
+        ['Transfers out', Math.round(t.totalTransfersOut).toLocaleString()],
+        ['Net', Math.round(net).toLocaleString()],
       ],
-    )
+    })
   }
 
   function exportDaily() {
     if (!daily.data || daily.data.length === 0) return
-    downloadCsv(
-      `wallet-daily-${studentTag}-${todayStamp()}.csv`,
-      ['Date', 'Deposits (RWF)', 'Payments (RWF)', 'Transfers in (RWF)', 'Transfers out (RWF)'],
-      daily.data.map((d) => [d.date, d.deposits, d.payments, d.transfersIn, d.transfersOut]),
-    )
+    downloadReportPdf({
+      filename: `wallet-daily-${studentTag}-${todayStamp()}.pdf`,
+      title: 'Daily summary',
+      studentNumber: student?.studentNumber,
+      studentName: student?.name,
+      head: ['Date', 'Deposits', 'Payments', 'Transfers in', 'Transfers out'],
+      rows: daily.data.map((d) => [
+        formatDate(d.date),
+        Math.round(d.deposits).toLocaleString(),
+        Math.round(d.payments).toLocaleString(),
+        Math.round(d.transfersIn).toLocaleString(),
+        Math.round(d.transfersOut).toLocaleString(),
+      ]),
+    })
   }
 
   return (
@@ -51,7 +63,7 @@ export default function Reports() {
 
       <div className="section-head">
         <h2>Totals</h2>
-        <button className="secondary" onClick={exportTotals} disabled={!t}>Export CSV</button>
+        <button className="secondary" onClick={exportTotals} disabled={!t}>Export PDF</button>
       </div>
 
       <section className="totals-grid">
@@ -83,7 +95,7 @@ export default function Reports() {
           className="secondary"
           onClick={exportDaily}
           disabled={!daily.data || daily.data.length === 0}
-        >Export CSV</button>
+        >Export PDF</button>
       </div>
 
       <div className="card">
