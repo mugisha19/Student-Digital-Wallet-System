@@ -40,6 +40,8 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
 
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection(JwtOptions.SectionName));
 builder.Services.AddSingleton<JwtTokenService>();
+builder.Services.AddSingleton<PinHasher>();
+builder.Services.AddScoped<AuthService>();
 
 var jwt = builder.Configuration.GetSection(JwtOptions.SectionName).Get<JwtOptions>()!;
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
